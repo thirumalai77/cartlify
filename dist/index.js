@@ -1644,6 +1644,6 @@ function useDisclosure(defaultOpen = false) {
   return { isOpen, onOpen, onClose, onToggle };
 }
 
-export { Badge, Button, CartDrawer, CartItemComponent, CheckoutStepper, IconButton, PageLoader, ProductCard, calculateDiscount, cn, formatPrice, useCart, useDisclosure, useMediaQuery };
+export { Badge, Button, CartDrawer, CartItemComponent, CheckIcon, CheckoutStepper, ChevronLeftIcon, ChevronRightIcon, CloseIcon, HeartIcon, IconButton, MinusIcon, PageLoader, PlusIcon, ProductCard, ShoppingCartIcon, SpinnerIcon, StarIcon, TrashIcon, calculateDiscount, cn, formatPrice, useCart, useDisclosure, useMediaQuery };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

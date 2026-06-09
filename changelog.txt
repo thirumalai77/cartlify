@@ -1,3 +1,14 @@
+v0.1.2 — 2026-06-09
+- Exported full icon library (11 SVG icons) from public API
+- Added IconProps type export
+- Fix: icons were built but not accessible to consumers
+
+v0.1.1 — 2026-06-09
+- Widened TypeScript peer dependency to >=4.7.4 (supports TS 6.x)
+- Added homepage, repository, and bugs fields to package.json
+- Fix: npm install failed in projects using TypeScript 6.x
+- Excluded dist source maps from published bundle (halves package size)
+
 v0.1.0 — 2026-06-03
 - Initial release
 - ProductCard component (default, horizontal, compact variants)

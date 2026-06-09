@@ -60,8 +60,8 @@ Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 acc
 
 ## Live Preview
 
-> **Storybook:** [https://cartlify.vercel.app](https://cartlify.vercel.app)
-> **Demo App:** [https://cartlify-demo.vercel.app](https://cartlify-demo.vercel.app)
+> **Storybook:** [ https://cartlify.vercel.app ](#)
+> **Demo App:** [ https://cartlify-demo.vercel.app/ ](#)
 
 ---
 
@@ -160,7 +160,7 @@ export default function ShopPage() {
 }
 ```
 
-### 6. Tailwind integration (optional)
+### 5. Tailwind integration (optional)
 
 ```js
 // tailwind.config.js
@@ -291,19 +291,13 @@ A slide-in cart panel with item list, quantity controls, subtotal, empty state, 
 ```tsx
 import { CartDrawer, useCart, useDisclosure } from 'cartlify';
 
-// useCart() holds local state — call it once at the top level and pass
-// items/handlers down (or store them in your own React context) so that
-// ProductCard's addItem and CartDrawer's items share the same cart.
 export default function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { items, addItem, removeItem, updateQuantity } = useCart();
+  const { items, removeItem, updateQuantity } = useCart();
 
   return (
     <>
       <button onClick={onOpen}>Cart ({items.length})</button>
-
-      {/* Pass addItem down to ProductCard components */}
-      {/* <ProductCard ... onAddToCart={addItem} /> */}
 
       <CartDrawer
         isOpen={isOpen}
@@ -624,7 +618,7 @@ addItem(product, 3);
 updateQuantity('id', 5); // clamped to minimum 1
 ```
 
-> **Important:** `useCart()` creates **independent state per call**. Every component that calls `useCart()` directly gets its own separate cart. To share cart state across `ProductCard`, `CartDrawer`, and other components, call `useCart()` once at your app's top level and pass `items`, `addItem`, and other handlers down via props or a React context.
+State is local to the component tree. Wrap in a React Context to share cart state across the app.
 
 ---
 

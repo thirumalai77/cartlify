@@ -298,6 +298,36 @@ declare function useDisclosure(defaultOpen?: boolean): UseDisclosureReturn;
  */
 declare function useMediaQuery(query: string): boolean;
 
+interface IconProps {
+    className?: string;
+    color?: string;
+}
+
+declare function CheckIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function SpinnerIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function StarIcon({ className, color }: IconProps): React.ReactElement;
+
+interface HeartIconProps extends IconProps {
+    filled?: boolean;
+}
+declare function HeartIcon({ filled, className, color, }: HeartIconProps): React.ReactElement;
+
+declare function ChevronLeftIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function ChevronRightIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function CloseIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function ShoppingCartIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function TrashIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function MinusIcon({ className, color }: IconProps): React.ReactElement;
+
+declare function PlusIcon({ className, color }: IconProps): React.ReactElement;
+
 /** Merge Tailwind classes; consumer className always wins on conflict. */
 declare function cn(...inputs: ClassValue[]): string;
 
@@ -315,4 +345,4 @@ declare function formatPrice(price: number, currency?: string): string;
  */
 declare function calculateDiscount(originalPrice: number, currentPrice: number): number;
 
-export { Badge, type BadgeProps, type BadgeVariant, Button, type ButtonSize, type ButtonVariant, CartDrawer, type CartDrawerClassNames, type CartDrawerProps, type CartItem, CartItemComponent, type CartItemProps, CheckoutStepper, type CheckoutStepperClassNames, type CheckoutStepperProps, IconButton, type IconButtonProps, type LoaderPosition, type LoaderSize, type LoaderVariant, PageLoader, type PageLoaderProps, type Product, ProductCard, type ProductCardClassNames, type ProductCardProps, type ProductCardVariant, type Step, type StepStatus, type StepperOrientation, type UseCartReturn, type UseDisclosureReturn, calculateDiscount, cn, formatPrice, useCart, useDisclosure, useMediaQuery };
+export { Badge, type BadgeProps, type BadgeVariant, Button, type ButtonSize, type ButtonVariant, CartDrawer, type CartDrawerClassNames, type CartDrawerProps, type CartItem, CartItemComponent, type CartItemProps, CheckIcon, CheckoutStepper, type CheckoutStepperClassNames, type CheckoutStepperProps, ChevronLeftIcon, ChevronRightIcon, CloseIcon, HeartIcon, IconButton, type IconButtonProps, type IconProps, type LoaderPosition, type LoaderSize, type LoaderVariant, MinusIcon, PageLoader, type PageLoaderProps, PlusIcon, type Product, ProductCard, type ProductCardClassNames, type ProductCardProps, type ProductCardVariant, ShoppingCartIcon, SpinnerIcon, StarIcon, type Step, type StepStatus, type StepperOrientation, TrashIcon, type UseCartReturn, type UseDisclosureReturn, calculateDiscount, cn, formatPrice, useCart, useDisclosure, useMediaQuery };
