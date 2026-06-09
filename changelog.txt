@@ -1,0 +1,12 @@
+v0.1.0 — 2026-06-03
+- Initial release
+- ProductCard component (default, horizontal, compact variants)
+- CartDrawer component with focus trap and keyboard navigation
+- PageLoader component (spinner, dots, bars, pulse variants)
+- CheckoutStepper component (horizontal, vertical, connector animation)
+- Button, Badge, IconButton primitives
+- useCart, useDisclosure, useMediaQuery hooks
+- 40+ CSS design tokens, light and dark mode
+- 11 SVG icon components
+- 141 Jest + React Testing Library tests
+- Storybook 8 interactive docs
