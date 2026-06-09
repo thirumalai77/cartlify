@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "description": "Production-ready React + TypeScript e-commerce component library",
   "license": "MIT",
+  "homepage": "https://github.com/thirumalai77/cartlify#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thirumalai77/cartlify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thirumalai77/cartlify/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -19,7 +27,8 @@
     "**/*.css"
   ],
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
     "build": "tsup && node scripts/build-styles.mjs",
