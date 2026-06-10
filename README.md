@@ -6,6 +6,8 @@ Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 acc
 npm install cartlify
 ```
 
+> Want the full source code + commercial license? [Get it on Gumroad →](https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit)
+
 ---
 
 ## Table of Contents
@@ -934,6 +936,24 @@ Includes pre-built `.tgz`, full changelog, and future updates.
 - **Gumroad:** Leave a comment on your purchase page
 
 Please include the component name, React and TypeScript versions, and a minimal reproduction when reporting bugs.
+
+---
+
+## Sponsorship
+
+If Cartlify saves you time, consider supporting its development:
+
+- **GitHub Sponsors:** [github.com/sponsors/thirumalai77](https://github.com/sponsors/thirumalai77) — monthly support
+- **Open Collective:** [opencollective.com/cartlify](https://opencollective.com/cartlify) — one-time or recurring
+- **Gumroad:** [Purchase the full kit](https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit) — includes source code + commercial license
+
+---
+
+## Consulting
+
+Need custom components, a full storefront UI, or help integrating Cartlify into your project?
+
+**[Hire me →](mailto:karthikgs.softengg@gmail.com)** — React + TypeScript UI development, component library setup, design system implementation.
 
 ---
 
