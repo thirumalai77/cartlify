@@ -1,6 +1,10 @@
-# Cartlify [![npm version](https://badge.fury.io/js/cartlify.svg)](https://npmjs.com/package/cartlify)[![npm downloads](https://img.shields.io/npm/dm/cartlify.svg)](https://npmjs.com/package/cartlify)
+# Cartlify [![npm version](https://badge.fury.io/js/cartlify.svg)](https://npmjs.com/package/cartlify) [![npm downloads](https://img.shields.io/npm/dm/cartlify.svg)](https://npmjs.com/package/cartlify) [![license](https://img.shields.io/npm/l/cartlify.svg)](https://github.com/thirumalai77/cartlify/blob/main/LICENSE)
 **Production-ready React + TypeScript component library for building e-commerce storefronts.**  
 Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 accessible · Tree-shakeable
+
+```bash
+npm install cartlify
+```
 
 ---
 
@@ -91,11 +95,13 @@ Then skip to [Step 3](#3-install-peer-dependencies-if-not-already-present).
 
 ### Via ZIP *(Gumroad / ThemeForest purchase)*
 
-> **Purchased from Gumroad or ThemeForest?** The ZIP already contains a pre-built `cartlify-0.1.0.tgz` — no build step required.
+> **Purchased from Gumroad or ThemeForest?** Your ZIP includes:
+> - `cartlify-0.1.2.tgz` — pre-built package, ready to install
+> - `src/` — full TypeScript source code
 
 ### 1. Extract the ZIP
 
-Unzip `cartlify-v0.1.0.zip` anywhere on your machine. You will see `cartlify-0.1.0.tgz` inside.
+Unzip `cartlify-v0.1.2.zip` anywhere on your machine. Inside you will find the `cartlify-0.1.2.tgz` and the `src/` folder with the complete source code.
 
 ### 2. Install into your project
 
@@ -103,10 +109,10 @@ Run one command from inside your app, pointing to the `.tgz` file:
 
 ```bash
 # Windows PowerShell
-npm install "C:\Users\you\Downloads\cartlify-v0.1.0\cartlify-0.1.0.tgz"
+npm install "C:\Users\you\Downloads\cartlify-v0.1.2\cartlify-0.1.2.tgz"
 
 # macOS / Linux
-npm install ~/Downloads/cartlify-v0.1.0/cartlify-0.1.0.tgz
+npm install ~/Downloads/cartlify-v0.1.2/cartlify-0.1.2.tgz
 ```
 
 That's it. Cartlify is now in your `node_modules` and listed in `package.json`. Works with webpack, Turbopack, and Vite.
