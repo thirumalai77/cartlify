@@ -1,5 +1,4 @@
-# Cartlify
-
+# Cartlify [![npm version](https://badge.fury.io/js/cartlify.svg)](https://npmjs.com/package/cartlify)[![npm downloads](https://img.shields.io/npm/dm/cartlify.svg)](https://npmjs.com/package/cartlify)
 **Production-ready React + TypeScript component library for building e-commerce storefronts.**  
 Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 accessible · Tree-shakeable
 
