@@ -31,6 +31,7 @@ Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 acc
 - [Theming & Customization](#theming--customization)
 - [TypeScript Reference](#typescript-reference)
 - [Browser Support](#browser-support)
+- [Purchase](#purchase)
 - [Support](#support)
 - [License](#license)
 
@@ -60,8 +61,8 @@ Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 acc
 
 ## Live Preview
 
-> **Storybook:** [ https://cartlify.vercel.app ](#)
-> **Demo App:** [ https://cartlify-demo.vercel.app/ ](#)
+> **Storybook:** [https://cartlify.vercel.app](https://cartlify.vercel.app)
+> **Demo App:** [https://cartlify-demo.vercel.app](https://cartlify-demo.vercel.app)
 
 ---
 
@@ -72,7 +73,7 @@ Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 acc
 | Node.js | >= 18.0.0 |
 | React | >= 18.0.0 |
 | React DOM | >= 18.0.0 |
-| TypeScript | >= 4.7.4 and < 5.6.0 |
+| TypeScript | >= 4.7.4 |
 | Tailwind CSS | >= 3.0 *(optional)* |
 
 ---
@@ -913,10 +914,19 @@ import type {
 
 ---
 
+## Purchase
+
+- **Gumroad:** [Buy Cartlify on Gumroad](https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit)
+
+Includes pre-built `.tgz`, full changelog, and future updates.
+
+---
+
 ## Support
 
 - **Email:** karthikgs.softengg@gmail.com
-- **Gumroad:** Leave a comment on your purchase
+- **GitHub Issues:** [github.com/thirumalai77/cartlify/issues](https://github.com/thirumalai77/cartlify/issues)
+- **Gumroad:** Leave a comment on your purchase page
 
 Please include the component name, React and TypeScript versions, and a minimal reproduction when reporting bugs.
 
