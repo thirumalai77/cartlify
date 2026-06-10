@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cartlify — React + TypeScript E-commerce UI Kit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Stagger children */
+    .stagger > *:nth-child(1) { transition-delay: 0ms; }
+    .stagger > *:nth-child(2) { transition-delay: 80ms; }
+    .stagger > *:nth-child(3) { transition-delay: 160ms; }
+    .stagger > *:nth-child(4) { transition-delay: 240ms; }
+    .stagger > *:nth-child(5) { transition-delay: 320ms; }
+    .stagger > *:nth-child(6) { transition-delay: 400ms; }
+    .stagger > *:nth-child(7) { transition-delay: 480ms; }
+    .stagger > *:nth-child(8) { transition-delay: 560ms; }
+
+    /* Code font */
+    .mono { font-family: 'Menlo','Monaco','Courier New',monospace; }
+
+    /* Glow on primary button */
+    .btn-primary:hover { box-shadow: 0 0 32px rgba(99,102,241,0.45); }
+
+    /* Details open arrow */
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .arrow { transform: rotate(180deg); }
+    .arrow { transition: transform 0.25s ease; }
+
+    /* Animated bars */
+    @keyframes barBounce {
+      0%,100% { transform: scaleY(0.4); }
+      50%      { transform: scaleY(1); }
+    }
+    .bar1 { animation: barBounce 1s ease-in-out infinite; animation-delay: 0ms; }
+    .bar2 { animation: barBounce 1s ease-in-out infinite; animation-delay: 180ms; }
+    .bar3 { animation: barBounce 1s ease-in-out infinite; animation-delay: 360ms; }
+    .bar4 { animation: barBounce 1s ease-in-out infinite; animation-delay: 540ms; }
+
+    /* Dots bounce */
+    @keyframes dotBounce {
+      0%,80%,100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+    }
+    .dot1 { animation: dotBounce 1.2s ease-in-out infinite; animation-delay: 0ms; }
+    .dot2 { animation: dotBounce 1.2s ease-in-out infinite; animation-delay: 200ms; }
+    .dot3 { animation: dotBounce 1.2s ease-in-out infinite; animation-delay: 400ms; }
+  </style>
+</head>
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-white antialiased transition-colors duration-300">
+
+<!-- ============================================================
+     STICKY NAV
+============================================================ -->
+<nav class="sticky top-0 z-50 bg-white/85 dark:bg-slate-950/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center gap-2.5">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" class="text-indigo-500" aria-hidden="true">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 10a4 4 0 01-8 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="font-bold text-lg tracking-tight">Cartlify</span>
+      <span class="hidden sm:inline text-xs bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded-full font-semibold">v0.1.3</span>
+    </div>
+
+    <!-- Right -->
+    <div class="flex items-center gap-3">
+      <!-- Theme toggle -->
+      <button id="theme-toggle" aria-label="Toggle colour scheme" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <!-- Sun (shown in dark) -->
+        <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><path stroke-linecap="round" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <!-- Moon (shown in light) -->
+        <svg id="icon-moon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+
+      <!-- npm badge -->
+      <a href="https://npmjs.com/package/cartlify" target="_blank" rel="noopener noreferrer"
+         class="hidden sm:flex items-center gap-1.5 text-xs font-semibold bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm7.07 4.5H4.5v15h7.07v-7.5h3v7.5h2.93V4.5H7.07z"/></svg>
+        npm
+      </a>
+      <!-- Buy button -->
+      <a href="https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit" target="_blank" rel="noopener noreferrer"
+         class="btn-primary bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all">
+        Buy — $29
+      </a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="relative overflow-hidden pt-24 pb-28 px-5">
+  <!-- Background blobs -->
+  <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/80 via-white to-purple-50/60 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute -top-24 -right-24 w-[480px] h-[480px] bg-indigo-400/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute -bottom-24 -left-24 w-[480px] h-[480px] bg-purple-400/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative max-w-4xl mx-auto text-center">
+    <!-- Badges -->
+    <div class="flex flex-wrap items-center justify-center gap-3 mb-8">
+      <div class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/40 border border-indigo-200 dark:border-indigo-700/60 text-indigo-700 dark:text-indigo-300 text-sm font-medium px-4 py-1.5 rounded-full">
+        <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" aria-hidden="true"></span>
+        Production-ready &middot; React 18 + TypeScript
+      </div>
+      <a href="https://npmjs.com/package/cartlify" target="_blank" rel="noopener noreferrer"
+         class="inline-flex items-center gap-2 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm7.07 4.5H4.5v15h7.07v-7.5h3v7.5h2.93V4.5H7.07z"/></svg>
+        Now on npm
+      </a>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6">
+      Build e-commerce UIs<br />
+      <span class="gradient-text">in minutes, not weeks</span>
+    </h1>
+
+    <!-- Sub-headline -->
+    <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      Cartlify ships 4 polished components, 3 hooks, 11 icons, and a full design token system —
+      with <strong class="text-slate-900 dark:text-white">dark mode</strong>,
+      <strong class="text-slate-900 dark:text-white">WCAG 2.1 a11y</strong>, and
+      <strong class="text-slate-900 dark:text-white">141 tests</strong> included.
+      Drop it into any React 18 project and start shipping.
+    </p>
+
+    <!-- npm install pill + copy -->
+    <div class="inline-flex items-center gap-3 bg-slate-900 dark:bg-slate-800 border border-slate-700 rounded-xl px-5 py-3 mb-8 group">
+      <span class="text-slate-500 text-sm mono select-none">$</span>
+      <code id="npm-cmd" class="mono text-green-400 text-sm sm:text-base select-all">npm install cartlify</code>
+      <button onclick="copyCmd()" aria-label="Copy install command"
+              class="ml-1 text-slate-500 hover:text-white transition-colors">
+        <svg id="copy-icon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+        </svg>
+        <svg id="check-icon" class="w-4 h-4 text-green-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-14">
+      <a href="https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit" target="_blank" rel="noopener noreferrer"
+         class="btn-primary bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white px-9 py-4 rounded-xl font-bold text-lg transition-all">
+        Get Cartlify &mdash; $29
+      </a>
+      <a href="https://cartlify.vercel.app/" target="_blank" rel="noopener noreferrer"
+         class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white px-9 py-4 rounded-xl font-semibold text-lg hover:border-indigo-400 dark:hover:border-indigo-500 transition-all">
+        View Storybook →
+      </a>
+    </div>
+
+    <!-- Stats row -->
+    <div class="flex flex-wrap justify-center gap-x-7 gap-y-2.5 text-sm text-slate-500 dark:text-slate-400">
+      <span>✓ 4 main components</span>
+      <span>✓ 141 Jest tests</span>
+      <span>✓ WCAG 2.1 accessible</span>
+      <span>✓ Full dark mode</span>
+      <span>✓ TypeScript-first</span>
+      <span>✓ Storybook docs</span>
+      <span>✓ Zero CSS-in-JS</span>
+      <span>✓ Published on npm</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     TECH BADGES STRIP
+============================================================ -->
+<div class="border-y border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 py-5">
+  <div class="max-w-4xl mx-auto px-5 flex flex-wrap items-center justify-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+    <span class="mr-1 hidden sm:inline">Built with</span>
+    <span class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg">React 18+</span>
+    <span class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg">TypeScript 5.5</span>
+    <span class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg">Tailwind CSS 3.4</span>
+    <span class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg">Storybook 8</span>
+    <span class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg">Jest + RTL</span>
+    <span class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg">ESM + CJS</span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     COMPONENTS SECTION
+============================================================ -->
+<section class="py-24 px-5">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4">4 production-ready components</h2>
+      <p class="text-slate-500 dark:text-slate-400 max-w-lg mx-auto">Every component ships with variants, accessibility, dark mode, and thorough tests. Zero glue code needed.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 stagger">
+
+      <!-- ── ProductCard ── -->
+      <div class="reveal bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-lg transition-all duration-300">
+        <div class="mb-5">
+          <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">ProductCard</span>
+          <h3 class="text-xl font-bold mt-1">Product Display Card</h3>
+        </div>
+
+        <!-- CSS mockup -->
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 mb-5 flex gap-3 items-start">
+          <!-- Vertical card -->
+          <div class="bg-white dark:bg-slate-700 rounded-xl shadow-sm w-28 flex-shrink-0 overflow-hidden border border-slate-100 dark:border-slate-600">
+            <div class="bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-600 dark:to-slate-500 h-20 relative">
+              <span class="absolute top-1.5 left-1.5 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">-20%</span>
+              <span class="absolute top-1.5 right-1.5 text-rose-500">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+              </span>
+              <!-- Thumbnail strip -->
+              <div class="absolute bottom-0 left-0 right-0 flex gap-0.5 px-1 pb-0.5">
+                <div class="h-4 flex-1 bg-white/40 rounded-sm"></div>
+                <div class="h-4 flex-1 bg-white/40 rounded-sm ring-1 ring-indigo-400"></div>
+                <div class="h-4 flex-1 bg-white/40 rounded-sm"></div>
+              </div>
+            </div>
+            <div class="p-2 space-y-1.5">
+              <div class="h-2 bg-slate-200 dark:bg-slate-500 rounded w-full"></div>
+              <div class="flex gap-0.5">
+                <div class="w-2 h-2 bg-yellow-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-yellow-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-yellow-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-yellow-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-slate-200 dark:bg-slate-500 rounded-sm"></div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="h-2.5 bg-indigo-500 rounded w-10"></div>
+                <div class="w-4 h-4 bg-indigo-500 rounded-md flex items-center justify-center">
+                  <svg width="8" height="8" viewBox="0 0 16 16" fill="white"><path d="M2 3h1.5l2 7h7l2-7H5"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Horizontal card -->
+          <div class="bg-white dark:bg-slate-700 rounded-xl shadow-sm flex-1 p-2.5 border border-slate-100 dark:border-slate-600 flex gap-2">
+            <div class="bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-600 dark:to-slate-500 rounded-lg w-14 h-14 flex-shrink-0"></div>
+            <div class="flex-1 space-y-1.5">
+              <div class="h-2 bg-slate-200 dark:bg-slate-500 rounded w-full"></div>
+              <div class="h-2 bg-slate-200 dark:bg-slate-500 rounded w-3/4"></div>
+              <div class="flex gap-0.5">
+                <div class="w-2 h-2 bg-yellow-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-yellow-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-yellow-400 rounded-sm"></div>
+              </div>
+              <div class="h-2 bg-indigo-500 rounded w-12"></div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1.5">
+          <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">→</span> 3 layout variants — default, horizontal, compact</li>
+          <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">→</span> Image gallery with thumbnail strip + navigation</li>
+          <li class="flex gap-2"><span class="text-indigo-400 mt-0.5">→</span> Wishlist toggle, rating stars, discount badge, skeleton</li>
+        </ul>
+      </div>
+
+      <!-- ── CartDrawer ── -->
+      <div class="reveal bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-lg transition-all duration-300">
+        <div class="mb-5">
+          <span class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest">CartDrawer</span>
+          <h3 class="text-xl font-bold mt-1">Slide-in Cart Panel</h3>
+        </div>
+
+        <!-- CSS mockup -->
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl mb-5 relative h-36 overflow-hidden">
+          <div class="absolute inset-0 bg-slate-900/20 dark:bg-slate-900/50 rounded-xl"></div>
+          <!-- Page blurred content behind -->
+          <div class="absolute left-3 top-3 space-y-1.5 opacity-40">
+            <div class="h-2 w-28 bg-slate-400 dark:bg-slate-500 rounded"></div>
+            <div class="h-2 w-20 bg-slate-400 dark:bg-slate-500 rounded"></div>
+            <div class="h-2 w-24 bg-slate-400 dark:bg-slate-500 rounded"></div>
+          </div>
+          <!-- Drawer panel -->
+          <div class="absolute right-0 top-0 bottom-0 w-52 bg-white dark:bg-slate-700 shadow-2xl rounded-l-2xl p-3 flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-sm text-slate-900 dark:text-white">Cart (2)</span>
+              <div class="w-5 h-5 bg-slate-100 dark:bg-slate-600 rounded-full flex items-center justify-center text-slate-400 text-xs">✕</div>
+            </div>
+            <div class="space-y-2 flex-1">
+              <div class="flex gap-2 items-center">
+                <div class="w-9 h-9 bg-slate-200 dark:bg-slate-600 rounded-lg flex-shrink-0"></div>
+                <div class="flex-1">
+                  <div class="h-1.5 bg-slate-200 dark:bg-slate-500 rounded w-full mb-1"></div>
+                  <div class="h-1.5 bg-indigo-400 rounded w-10"></div>
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="w-5 h-5 bg-slate-100 dark:bg-slate-600 rounded text-slate-500 text-[10px] flex items-center justify-center">−</div>
+                  <span class="text-xs text-slate-700 dark:text-slate-300">1</span>
+                  <div class="w-5 h-5 bg-slate-100 dark:bg-slate-600 rounded text-slate-500 text-[10px] flex items-center justify-center">+</div>
+                </div>
+              </div>
+              <div class="flex gap-2 items-center">
+                <div class="w-9 h-9 bg-slate-200 dark:bg-slate-600 rounded-lg flex-shrink-0"></div>
+                <div class="flex-1">
+                  <div class="h-1.5 bg-slate-200 dark:bg-slate-500 rounded w-3/4 mb-1"></div>
+                  <div class="h-1.5 bg-indigo-400 rounded w-8"></div>
+                </div>
+                <div class="flex items-center gap-1">
+                  <div class="w-5 h-5 bg-slate-100 dark:bg-slate-600 rounded text-slate-500 text-[10px] flex items-center justify-center">−</div>
+                  <span class="text-xs text-slate-700 dark:text-slate-300">2</span>
+                  <div class="w-5 h-5 bg-slate-100 dark:bg-slate-600 rounded text-slate-500 text-[10px] flex items-center justify-center">+</div>
+                </div>
+              </div>
+            </div>
+            <div class="h-7 bg-indigo-600 rounded-lg flex items-center justify-center mt-2">
+              <span class="text-white text-[11px] font-bold">Checkout →</span>
+            </div>
+          </div>
+        </div>
+
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1.5">
+          <li class="flex gap-2"><span class="text-purple-400 mt-0.5">→</span> Left / right position, animated backdrop overlay</li>
+          <li class="flex gap-2"><span class="text-purple-400 mt-0.5">→</span> Focus trap, Escape key + backdrop-click dismiss</li>
+          <li class="flex gap-2"><span class="text-purple-400 mt-0.5">→</span> Quantity controls, remove items, subtotal display</li>
+        </ul>
+      </div>
+
+      <!-- ── CheckoutStepper ── -->
+      <div class="reveal bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-emerald-400 dark:hover:border-emerald-500 hover:shadow-lg transition-all duration-300">
+        <div class="mb-5">
+          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">CheckoutStepper</span>
+          <h3 class="text-xl font-bold mt-1">Multi-step Progress</h3>
+        </div>
+
+        <!-- CSS mockup -->
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-5 mb-5">
+          <div class="flex items-center justify-between">
+            <!-- Step 1 completed -->
+            <div class="flex flex-col items-center gap-1.5">
+              <div class="w-9 h-9 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow">✓</div>
+              <span class="text-[11px] text-slate-500">Cart</span>
+            </div>
+            <!-- Connector filled -->
+            <div class="flex-1 h-0.5 bg-indigo-500 mx-2"></div>
+            <!-- Step 2 active -->
+            <div class="flex flex-col items-center gap-1.5">
+              <div class="w-9 h-9 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold ring-4 ring-indigo-200 dark:ring-indigo-900">2</div>
+              <span class="text-[11px] text-indigo-600 dark:text-indigo-400 font-semibold">Shipping</span>
+            </div>
+            <!-- Connector empty -->
+            <div class="flex-1 h-0.5 bg-slate-200 dark:bg-slate-600 mx-2"></div>
+            <!-- Step 3 pending -->
+            <div class="flex flex-col items-center gap-1.5">
+              <div class="w-9 h-9 bg-white dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-500 rounded-full flex items-center justify-center text-slate-400 text-sm">3</div>
+              <span class="text-[11px] text-slate-400">Payment</span>
+            </div>
+            <!-- Connector empty -->
+            <div class="flex-1 h-0.5 bg-slate-200 dark:bg-slate-600 mx-2"></div>
+            <!-- Step 4 pending -->
+            <div class="flex flex-col items-center gap-1.5">
+              <div class="w-9 h-9 bg-white dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-500 rounded-full flex items-center justify-center text-slate-400 text-sm">4</div>
+              <span class="text-[11px] text-slate-400">Done</span>
+            </div>
+          </div>
+        </div>
+
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1.5">
+          <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">→</span> Horizontal &amp; vertical orientations</li>
+          <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">→</span> Animated connector fill, custom step icons</li>
+          <li class="flex gap-2"><span class="text-emerald-400 mt-0.5">→</span> Arrow key keyboard navigation, click-to-go-back</li>
+        </ul>
+      </div>
+
+      <!-- ── PageLoader ── -->
+      <div class="reveal bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-rose-400 dark:hover:border-rose-500 hover:shadow-lg transition-all duration-300">
+        <div class="mb-5">
+          <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest">PageLoader</span>
+          <h3 class="text-xl font-bold mt-1">Loading Indicator</h3>
+        </div>
+
+        <!-- CSS mockup -->
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-5 mb-5 flex items-center justify-around gap-2">
+          <!-- Spinner -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-9 h-9 flex items-center justify-center">
+              <div class="w-8 h-8 rounded-full border-[3px] border-slate-200 dark:border-slate-600 border-t-indigo-500 animate-spin"></div>
+            </div>
+            <span class="text-[11px] text-slate-400">spinner</span>
+          </div>
+          <!-- Dots -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="flex gap-1 h-9 items-end pb-0.5">
+              <div class="w-2.5 h-2.5 bg-indigo-500 rounded-full dot1"></div>
+              <div class="w-2.5 h-2.5 bg-indigo-500 rounded-full dot2"></div>
+              <div class="w-2.5 h-2.5 bg-indigo-500 rounded-full dot3"></div>
+            </div>
+            <span class="text-[11px] text-slate-400">dots</span>
+          </div>
+          <!-- Bars -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="flex gap-1 h-9 items-end">
+              <div class="w-2 bg-indigo-500 rounded-t bar1" style="height:60%;transform-origin:bottom"></div>
+              <div class="w-2 bg-indigo-500 rounded-t bar2" style="height:100%;transform-origin:bottom"></div>
+              <div class="w-2 bg-indigo-500 rounded-t bar3" style="height:40%;transform-origin:bottom"></div>
+              <div class="w-2 bg-indigo-500 rounded-t bar4" style="height:75%;transform-origin:bottom"></div>
+            </div>
+            <span class="text-[11px] text-slate-400">bars</span>
+          </div>
+          <!-- Pulse -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-9 h-9 flex items-center justify-center">
+              <span class="relative flex w-7 h-7">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-60"></span>
+                <span class="relative inline-flex rounded-full w-7 h-7 bg-indigo-500"></span>
+              </span>
+            </div>
+            <span class="text-[11px] text-slate-400">pulse</span>
+          </div>
+        </div>
+
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1.5">
+          <li class="flex gap-2"><span class="text-rose-400 mt-0.5">→</span> 4 variants: spinner, dots, bars, pulse</li>
+          <li class="flex gap-2"><span class="text-rose-400 mt-0.5">→</span> 3 positions: fullscreen, overlay, inline</li>
+          <li class="flex gap-2"><span class="text-rose-400 mt-0.5">→</span> 4 size presets, custom colour, loading message</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     EVERYTHING INCLUDED
+============================================================ -->
+<section class="py-24 px-5 bg-slate-50 dark:bg-slate-900">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4">Everything you need, nothing you don't</h2>
+      <p class="text-slate-500 dark:text-slate-400">Beyond the four main components, Cartlify ships a complete set of building blocks.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 stagger">
+
+      <div class="reveal bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="text-3xl mb-3" aria-hidden="true">🪝</div>
+        <h3 class="font-bold mb-2">3 Utility Hooks</h3>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">useCart</code> — add, remove, update, totals</li>
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">useDisclosure</code> — open / close state</li>
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">useMediaQuery</code> — SSR-safe breakpoints</li>
+        </ul>
+      </div>
+
+      <div class="reveal bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="text-3xl mb-3" aria-hidden="true">✦</div>
+        <h3 class="font-bold mb-2">11 SVG Icons</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Tree-shakeable icon components: Cart, Heart (filled), Star, Trash, Spinner, Chevrons ×2, Close, Check, Plus, Minus. All accept <code class="mono text-indigo-600 dark:text-indigo-400">className</code> and <code class="mono text-indigo-600 dark:text-indigo-400">color</code> props.</p>
+      </div>
+
+      <div class="reveal bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="text-3xl mb-3" aria-hidden="true">🎨</div>
+        <h3 class="font-bold mb-2">40+ Design Tokens</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">CSS custom properties covering colors, spacing, border-radius, shadows, motion duration, and touch targets — with full light + dark variants.</p>
+      </div>
+
+      <div class="reveal bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="text-3xl mb-3" aria-hidden="true">🧱</div>
+        <h3 class="font-bold mb-2">3 Primitive Components</h3>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">Button</code> — 4 variants, 3 sizes, loading state</li>
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">Badge</code> — sale, new, out-of-stock</li>
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">IconButton</code> — toggle, aria-pressed</li>
+        </ul>
+      </div>
+
+      <div class="reveal bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="text-3xl mb-3" aria-hidden="true">🔧</div>
+        <h3 class="font-bold mb-2">3 Utility Functions</h3>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">cn()</code> — Tailwind class merger</li>
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">formatPrice()</code> — currency formatter</li>
+          <li><code class="mono text-indigo-600 dark:text-indigo-400">calculateDiscount()</code> — % off helper</li>
+        </ul>
+      </div>
+
+      <div class="reveal bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="text-3xl mb-3" aria-hidden="true">📚</div>
+        <h3 class="font-bold mb-2">Interactive Storybook</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400">60+ stories with live controls, a11y checks, code snippets, and MDX docs. Your team's living component reference.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     INSTALL SNIPPET
+============================================================ -->
+<section class="py-24 px-5">
+  <div class="max-w-3xl mx-auto reveal">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-bold mb-3">Up and running in under 5 minutes</h2>
+      <p class="text-slate-500 dark:text-slate-400">Available on <a href="https://npmjs.com/package/cartlify" target="_blank" rel="noopener noreferrer" class="text-red-500 hover:underline font-medium">npm</a> — or install from the pre-built package included in your Gumroad purchase.</p>
+    </div>
+
+    <div class="bg-[#0d1117] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
+      <!-- Window chrome -->
+      <div class="flex items-center gap-1.5 px-4 py-3 border-b border-slate-800">
+        <div class="w-3 h-3 bg-red-500 rounded-full opacity-80"></div>
+        <div class="w-3 h-3 bg-yellow-500 rounded-full opacity-80"></div>
+        <div class="w-3 h-3 bg-green-500 rounded-full opacity-80"></div>
+        <span class="ml-3 text-slate-500 text-xs mono">terminal</span>
+      </div>
+
+      <!-- Code -->
+      <div class="mono p-6 text-sm leading-relaxed space-y-0.5">
+        <div class="text-slate-500"># 1. Install from npm</div>
+        <div><span class="text-green-400">$</span> <span class="text-slate-200">npm install cartlify</span></div>
+        <div class="pt-2 text-slate-500">#    or from the pre-built .tgz (Gumroad purchase)</div>
+        <div><span class="text-green-400">$</span> <span class="text-slate-200">npm install ./cartlify-0.1.3.tgz</span></div>
+        <div class="pt-3 text-slate-500"># 2. Import styles in your entry point</div>
+        <div><span class="text-purple-400">import</span> <span class="text-yellow-300">'cartlify/styles'</span><span class="text-slate-400">;</span></div>
+        <div class="pt-3 text-slate-500"># 3. Add to tailwind.config.js content array (optional)</div>
+        <div><span class="text-slate-400">content: [</span><span class="text-yellow-300">'./node_modules/cartlify/dist/**/*.js'</span><span class="text-slate-400">]</span></div>
+        <div class="pt-3 text-slate-500"># 4. Import and use</div>
+        <div><span class="text-purple-400">import</span> <span class="text-slate-300">&#123;</span> <span class="text-blue-300">ProductCard</span><span class="text-slate-400">,</span> <span class="text-blue-300">CartDrawer</span><span class="text-slate-400">,</span> <span class="text-blue-300">useCart</span> <span class="text-slate-300">&#125;</span></div>
+        <div><span class="text-purple-400">  from</span> <span class="text-yellow-300">'cartlify'</span><span class="text-slate-400">;</span></div>
+      </div>
+    </div>
+
+    <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-4">
+      Full setup guide in <code class="mono text-indigo-500">README.md</code> &middot;
+      <a href="https://npmjs.com/package/cartlify" target="_blank" rel="noopener noreferrer" class="text-red-500 hover:underline">npmjs.com/package/cartlify</a> &middot;
+      Browser support: Chrome 90+, Firefox 90+, Safari 14+, Edge 90+
+    </p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     QUALITY GRID
+============================================================ -->
+<section class="py-24 px-5 bg-slate-50 dark:bg-slate-900">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4">Production quality, out of the box</h2>
+      <p class="text-slate-500 dark:text-slate-400">No hidden gotchas. No TODO comments. No missing edge cases.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger">
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">🌙</div>
+        <h3 class="font-bold mb-1">Dark Mode</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400"><code class="mono">data-theme="dark"</code> on root — zero extra code</p>
+      </div>
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">♿</div>
+        <h3 class="font-bold mb-1">WCAG 2.1</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">aria-labels, focus traps, keyboard navigation throughout</p>
+      </div>
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">🔷</div>
+        <h3 class="font-bold mb-1">TypeScript</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Full type inference, no <code class="mono">any</code>, strict mode on</p>
+      </div>
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">🧪</div>
+        <h3 class="font-bold mb-1">141 Tests</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Jest + React Testing Library, all passing</p>
+      </div>
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">📦</div>
+        <h3 class="font-bold mb-1">Tree-shakeable</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Dual ESM / CJS — import only what you use</p>
+      </div>
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">🎯</div>
+        <h3 class="font-bold mb-1">Zero CSS-in-JS</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Pure Tailwind + CSS tokens — no runtime overhead</p>
+      </div>
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">⚡</div>
+        <h3 class="font-bold mb-1">Any Bundler</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Vite, Next.js, CRA, Remix — all work out of the box</p>
+      </div>
+      <div class="reveal text-center p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="text-4xl mb-3" aria-hidden="true">🎨</div>
+        <h3 class="font-bold mb-1">Fully Themeable</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">40+ CSS tokens + per-slot className overrides</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PRICING
+============================================================ -->
+<section class="py-24 px-5">
+  <div class="max-w-sm mx-auto reveal">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-bold mb-3">Simple, one-time pricing</h2>
+      <p class="text-slate-500 dark:text-slate-400">No subscriptions. Pay once, yours forever.</p>
+    </div>
+
+    <div class="relative bg-white dark:bg-slate-900 border-2 border-indigo-500 rounded-2xl p-8 shadow-2xl overflow-hidden">
+      <!-- Glow blob -->
+      <div class="absolute -top-12 -right-12 w-40 h-40 bg-indigo-500/15 rounded-full blur-2xl pointer-events-none" aria-hidden="true"></div>
+
+      <div class="text-center mb-8">
+        <div class="text-6xl font-extrabold tracking-tight mb-1" data-gumroad-field="price">$29</div>
+        <div class="text-slate-500 dark:text-slate-400 text-sm">one-time &middot; single-site commercial license</div>
+      </div>
+
+      <ul class="space-y-2.5 mb-8 text-sm">
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> 4 production-ready components</li>
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> 3 utility hooks + 11 icons</li>
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> 40+ CSS design tokens</li>
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> Full TypeScript definitions</li>
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> Interactive Storybook docs</li>
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> 141 Jest tests included</li>
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> Full dark mode support</li>
+        <li class="flex items-center gap-2.5"><span class="text-green-500 font-bold text-base">✓</span> Email support</li>
+      </ul>
+
+      <a href="https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit" target="_blank" rel="noopener noreferrer"
+         class="btn-primary block w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-center py-4 rounded-xl font-bold text-lg transition-all">
+        Get Cartlify &mdash; $29
+      </a>
+      <p class="text-center text-xs text-slate-400 mt-3">30-day money-back guarantee</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FAQ
+============================================================ -->
+<section class="py-24 px-5 bg-slate-50 dark:bg-slate-900">
+  <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <h2 class="text-3xl font-bold">Common questions</h2>
+    </div>
+    <div class="space-y-3 stagger">
+
+      <details class="reveal group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between gap-4 p-5 font-semibold cursor-pointer select-none list-none">
+          What React version is required?
+          <span class="arrow text-slate-400 flex-shrink-0">▾</span>
+        </summary>
+        <p class="px-5 pb-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4">React 18+ is required. TypeScript 4.7 and above (including TypeScript 6.x) is supported. It works with Vite, Next.js 13+, Create React App, Remix, and any bundler that supports ESM or CJS.</p>
+      </details>
+
+      <details class="reveal group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between gap-4 p-5 font-semibold cursor-pointer select-none list-none">
+          Do I need Tailwind CSS already installed?
+          <span class="arrow text-slate-400 flex-shrink-0">▾</span>
+        </summary>
+        <p class="px-5 pb-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4">Yes — Tailwind CSS 3.4+ is a peer dependency. Add Cartlify's <code class="mono text-indigo-500">dist/**</code> path to your Tailwind content config and import <code class="mono text-indigo-500">cartlify/styles</code> in your CSS entry point. The README covers the full setup in one page.</p>
+      </details>
+
+      <details class="reveal group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between gap-4 p-5 font-semibold cursor-pointer select-none list-none">
+          What does the license allow?
+          <span class="arrow text-slate-400 flex-shrink-0">▾</span>
+        </summary>
+        <p class="px-5 pb-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4">A single-site commercial license: build one end product — for yourself or a client — and ship it. You can't redistribute the source or sub-license it. Building multiple projects? Purchase a license per project.</p>
+      </details>
+
+      <details class="reveal group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between gap-4 p-5 font-semibold cursor-pointer select-none list-none">
+          Can I get a refund?
+          <span class="arrow text-slate-400 flex-shrink-0">▾</span>
+        </summary>
+        <p class="px-5 pb-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4">Yes — 30-day money-back guarantee. If Cartlify doesn't work for your project, email <a href="mailto:karthikgs.softengg@gmail.com" class="text-indigo-500 hover:underline">karthikgs.softengg@gmail.com</a> and I'll refund you, no questions asked.</p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER CTA
+============================================================ -->
+<section class="relative py-28 px-5 text-center overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image:radial-gradient(circle at 1px 1px, white 1px, transparent 0);background-size:28px 28px;" aria-hidden="true"></div>
+  <div class="relative reveal">
+    <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to ship faster?</h2>
+    <p class="text-indigo-200 mb-10 max-w-md mx-auto text-lg">Stop rebuilding the same components. Get Cartlify and focus on what makes your store unique.</p>
+    <a href="https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit" target="_blank" rel="noopener noreferrer"
+       class="inline-block bg-white text-indigo-700 hover:bg-indigo-50 active:scale-95 px-12 py-4 rounded-xl font-bold text-lg transition-all shadow-xl">
+      Get Cartlify &mdash; $29
+    </a>
+    <p class="text-indigo-300/80 text-sm mt-4">30-day money-back guarantee &middot; Instant download &middot; Email support included</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="py-8 px-5 border-t border-slate-100 dark:border-slate-800 text-center text-sm text-slate-400">
+  <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-3">
+    <a href="https://npmjs.com/package/cartlify" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transition-colors">npm</a>
+    <a href="https://github.com/thirumalai77/cartlify" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
+    <a href="https://cartlify.vercel.app" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 transition-colors">Storybook</a>
+    <a href="https://karthiksoftengg.gumroad.com/l/cartlify-react-ui-kit" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 transition-colors">Gumroad</a>
+    <a href="mailto:karthikgs.softengg@gmail.com" class="hover:text-indigo-400 transition-colors">Email</a>
+  </div>
+  <p>© 2026 Cartlify &mdash; React + TypeScript E-commerce UI Kit</p>
+</footer>
+
+
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
+<script>
+  // ── Copy install command ──
+  function copyCmd() {
+    navigator.clipboard.writeText('npm install cartlify').then(function () {
+      document.getElementById('copy-icon').classList.add('hidden');
+      document.getElementById('check-icon').classList.remove('hidden');
+      setTimeout(function () {
+        document.getElementById('copy-icon').classList.remove('hidden');
+        document.getElementById('check-icon').classList.add('hidden');
+      }, 2000);
+    });
+  }
+
+  // ── Dark mode (system preference + toggle) ──
+  var root = document.documentElement;
+  var sunIcon  = document.getElementById('icon-sun');
+  var moonIcon = document.getElementById('icon-moon');
+
+  function applyTheme(dark) {
+    if (dark) {
+      root.classList.add('dark');
+      sunIcon.classList.remove('hidden');
+      moonIcon.classList.add('hidden');
+    } else {
+      root.classList.remove('dark');
+      sunIcon.classList.add('hidden');
+      moonIcon.classList.remove('hidden');
+    }
+  }
+
+  applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  document.getElementById('theme-toggle').addEventListener('click', function () {
+    applyTheme(!root.classList.contains('dark'));
+  });
+
+  // ── Scroll reveal ──
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+</script>
+
+</body>
+</html>
