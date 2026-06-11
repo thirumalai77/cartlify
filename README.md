@@ -1,4 +1,5 @@
-# Cartlify [![npm version](https://badge.fury.io/js/cartlify.svg)](https://npmjs.com/package/cartlify) [![npm downloads](https://img.shields.io/npm/dm/cartlify.svg)](https://npmjs.com/package/cartlify) [![license](https://img.shields.io/npm/l/cartlify.svg)](https://github.com/thirumalai77/cartlify/blob/main/LICENSE)
+# Cartlify [![npm version](https://badge.fury.io/js/cartlify.svg)](https://npmjs.com/package/cartlify) [![npm downloads](https://img.shields.io/npm/dm/cartlify.svg)](https://npmjs.com/package/cartlify) [![license](https://img.shields.io/npm/l/cartlify.svg)](https://github.com/thirumalai77/cartlify/blob/main/LICENSE) [![GitHub Sponsors](https://img.shields.io/github/sponsors/thirumalai77?style=social)](https://github.com/sponsors/thirumalai77)
+
 **Production-ready React + TypeScript component library for building e-commerce storefronts.**  
 Zero runtime CSS-in-JS · Token-driven theming · Full dark mode · WCAG 2.1 accessible · Tree-shakeable
 
